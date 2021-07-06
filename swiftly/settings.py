@@ -130,3 +130,8 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# login redirect url
+LOGIN_URL = '/sign-in'
+LOGIN_REDIRECT_URL = '/'
