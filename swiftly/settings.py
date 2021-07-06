@@ -38,7 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # project apps
     'src',
+
+    # 3rd party apps
+    'bootstrap4',
 
 ]
 
