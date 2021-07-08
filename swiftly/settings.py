@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-nz0mg8nlf*2svd4!xi16r6eb#ojfr@a^k7y9ocste(@fqr!!cv'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -110,15 +111,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = config("LANGUAGE_CODE")
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = config("TIME_ZONE")
 
-USE_I18N = True
+USE_I18N = config("USE_I18N", cast=bool)
 
-USE_L10N = True
+USE_L10N = config("USE_L10N", cast=bool)
 
-USE_TZ = True
+USE_TZ = config("USE_TZ", cast=bool)
 
 
 # Static files (CSS, JavaScript, Images)
