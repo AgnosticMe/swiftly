@@ -1,10 +1,11 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from src import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('social_django.urls', namespace='social')),
     path('', views.home, name='home'),
 
     path('sign-in/', auth_views.LoginView.as_view(template_name="sign_in.html"), name='login'),

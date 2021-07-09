@@ -44,6 +44,8 @@ INSTALLED_APPS = [
 
     # 3rd party apps
     'bootstrap4',
+    'social_django', # social media login feature
+    'sslserver' # SSL-enabled development server for the Django Framework
 
 ]
 
@@ -70,6 +72,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -136,3 +140,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # login redirect url
 LOGIN_URL = '/sign-in'
 LOGIN_REDIRECT_URL = '/'
+
+# social login django 
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_FACEBOOK_KEY = config('SOCIAL_AUTH_FACEBOOK_KEY')
+SOCIAL_AUTH_FACEBOOK_SECRET = config('SOCIAL_AUTH_FACEBOOK_SECRET')
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id, name, email'
+}
