@@ -3,6 +3,20 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from src import views
 
+from src.customer import views as customer_views
+from src.courier import views as courier_views
+
+# customer urls
+customer_urlpatterns = [
+    path('', customer_views.home, name='home'),
+]
+
+# courier urls
+courier_urlpatterns = [
+    path('', courier_views.home, name='home'),
+]
+
+# main urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('social_django.urls', namespace='social')),
@@ -12,6 +26,7 @@ urlpatterns = [
     path('sign-out/', auth_views.LogoutView.as_view(next_page="/"), name='logout'),
     path('sign-up/', views.sign_up, name='sign_up'),
 
-    path('customer/', views.customer_page, name='customer_page'),
-    path('courier/', views.courier_page, name='courier_page'),
+    path('customer/', include((customer_urlpatterns, 'customer'))),
+    path('courier/', include((courier_urlpatterns, 'courier'))),
 ]
+
