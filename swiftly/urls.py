@@ -9,6 +9,7 @@ from src.courier import views as courier_views
 # customer urls
 customer_urlpatterns = [
     path('', customer_views.home, name='home'),
+    path('profile/', customer_views.profile_page, name='profile'),
 ]
 
 # courier urls
