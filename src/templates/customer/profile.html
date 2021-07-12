@@ -15,6 +15,18 @@
             </form>
         </div>
     </div>
+
+    <b class="text-secondary">Change Password</b><br/>
+    <div class="card bg-white mt-2 mb-5">
+        <div class="card-body">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form change_password_form %}
+                <input type="hidden" name="action" value="update_password" />
+                <button type="submit" class="btn btn-info">Save</button>
+            </form>
+        </div>
+    </div>
 {% endblock main %}
     
 
