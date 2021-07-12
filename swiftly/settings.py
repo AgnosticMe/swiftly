@@ -46,7 +46,9 @@ INSTALLED_APPS = [
     # 3rd party apps
     'bootstrap4',
     'social_django', # social media login feature
-    'sslserver' # SSL-enabled development server for the Django Framework
+    'sslserver', # SSL-enabled development server for the Django Framework
+    'django_cleanup.apps.CleanupConfig', # cleaning up the user uploaded media files
+
 
 ]
 
@@ -58,6 +60,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'src.middleware.ProfileMiddleware',
 ]
 
 ROOT_URLCONF = 'swiftly.urls'
@@ -131,6 +134,10 @@ USE_TZ = config("USE_TZ", cast=bool)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Media files(Images, audios, videos) uploaded by users
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -3,6 +3,9 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from src import views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 from src.customer import views as customer_views
 from src.courier import views as courier_views
 
@@ -30,4 +33,8 @@ urlpatterns = [
     path('customer/', include((customer_urlpatterns, 'customer'))),
     path('courier/', include((courier_urlpatterns, 'courier'))),
 ]
+
+# configuring media files url
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
