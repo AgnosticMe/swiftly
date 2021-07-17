@@ -1,6 +1,6 @@
-from swiftly.settings import FIREBASE_PRIVATE_KEY_ID
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.template import context
 from django.urls import reverse
 from src.customer import forms
 
@@ -12,6 +12,8 @@ from django.conf import settings
 
 import firebase_admin
 from firebase_admin import credentials, auth
+
+import stripe
 
 # Firebase Configuration
 cred = credentials.Certificate({
@@ -28,6 +30,8 @@ cred = credentials.Certificate({
 })
 firebase_admin.initialize_app(cred)
 
+# stripe setup
+stripe.api_key = settings.STRIPE_API_SECRET_KEY
 
 # write your views here
 
@@ -84,4 +88,45 @@ def profile_page(request):
         'FIREBASE_APP_ID': settings.FIREBASE_APP_ID,
     }
     return render(request, 'customer/profile.html', context)
-    
+
+
+@login_required(login_url='/sign-in/?next=/customer/')
+def payment_method_page(request):
+    current_customer = request.user.customer
+
+    # remove existing card
+    if request.method == 'POST':
+        stripe.PaymentMethod.detach(current_customer.stripe_payment_method_id)
+        current_customer.stripe_payment_method_id = ""
+        current_customer.stripe_card_last4 = ""
+        current_customer.save()
+        return redirect(reverse('customer:payment_method'))
+
+    # save stripe customer info
+    if not current_customer.stripe_customer_id:
+        customer = stripe.Customer.create()
+        current_customer.stripe_customer_id = customer['id']
+        current_customer.save()
+
+    # Get stripe payment method of the customer
+    stripe_payment_methods = stripe.PaymentMethod.list(customer=current_customer.stripe_customer_id, type="card")
+
+    if stripe_payment_methods and len(stripe_payment_methods.data) > 0:
+        payment_method = stripe_payment_methods.data[0]
+        current_customer.stripe_payment_method_id = payment_method.id
+        current_customer.stripe_card_last4 = payment_method.card.last4
+        current_customer.save()
+    else:
+        current_customer.stripe_payment_method_id = ""
+        current_customer.stripe_card_last4 = ""
+        current_customer.save()
+
+    if not current_customer.stripe_payment_method_id:
+        intent = stripe.SetupIntent.create(customer = current_customer.stripe_customer_id)
+        context = {
+            "client_secret": intent.client_secret,
+            "STRIPE_API_PUBLIC_KEY": settings.STRIPE_API_PUBLIC_KEY,
+        }
+        return render(request, 'customer/payment_method.html', context)
+    else:
+        return render(request, 'customer/payment_method.html')
