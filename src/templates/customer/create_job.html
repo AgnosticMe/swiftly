@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load bootstrap4 %}
 
 {% block head %}
     <style>
@@ -29,7 +29,15 @@
                         JOB SUMMARY
                     </div>
                     <div class="card-body">
-                        <p>A summary of your job information will appear here.</p>
+                        
+                        {% if not job %}
+                             <p>A summary of your job information will appear here.</p>
+                        {% else %}
+                            <h4>{{ job.job_name }}</h4>
+                            <span>{{ job.quantity }} Item(s)</span><br />
+                            <span>{{ job.get_size_display }} Job</span><br />
+                        {% endif %}
+                            
                     </div>
                 </div>
             </div>
@@ -68,13 +76,27 @@
                 <div class="tab-content" id="pills-tabContent">
                     <div class="tab-pane fade show active" id="pills-info" role="tabpanel" aria-labelledby="pills-info-tab">
                         <h1>Item Info</h1>
+                        <form method="POST" enctype="multipart/form-data">
+                            <b class="text-secondary">Item Information</b><br />
+                            <div class="card bg-white mt-2 mb-5">
+                                <div class="card-body">
+                                    {% csrf_token %}
+                                    {% bootstrap_form step1_form %}
+                                </div>
+                            </div>
+                            <input type="hidden" name="step" value="1">
+                            <button type="submit" class="btn btn-info">Save & Continue</button>
+                        </form>
                     </div>
+
                     <div class="tab-pane fade" id="pills-pickup" role="tabpanel" aria-labelledby="pills-pickup-tab">
                         <h1>Pickup</h1>
                     </div>
+
                     <div class="tab-pane fade" id="pills-delivery" role="tabpanel" aria-labelledby="pills-delivery-tab">
                         <h1>Delivery</h1>
                     </div>
+
                     <div class="tab-pane fade" id="pills-payment" role="tabpanel" aria-labelledby="pills-payment-tab">
                         <h1>Payment</h1>
                     </div>

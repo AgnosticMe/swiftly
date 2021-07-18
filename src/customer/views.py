@@ -15,6 +15,8 @@ from firebase_admin import credentials, auth
 
 import stripe
 
+from src.models import *
+
 # Firebase Configuration
 cred = credentials.Certificate({
     "type": settings.FIREBASE_TYPE,
@@ -134,6 +136,25 @@ def payment_method_page(request):
 
 @login_required(login_url='/sign-in/?next=/customer/')
 def create_job_page(request):
-    if not request.user.customer.stripe_payment_method_id:
+    current_customer = request.user.customer
+    if not current_customer.stripe_payment_method_id:
         return redirect(reverse('customer:payment_method'))
-    return render(request, 'customer/create_job.html')
+
+    creating_job = Job.objects.filter(customer=current_customer, status=Job.CREATING_STATUS).last()
+    step1_form = forms.JobCreateStep1Form(instance=creating_job)
+
+    if request.method == 'POST':
+        if request.POST.get('step') == '1':
+            step1_form = forms.JobCreateStep1Form(request.POST, request.FILES, instance=creating_job)
+            if step1_form.is_valid():
+                creating_job = step1_form.save(commit=False)
+                creating_job.customer = current_customer
+                creating_job.save()
+                return redirect(reverse('customer:create_job'))
+
+    context = {
+        'step1_form': step1_form,
+        'job': creating_job,
+    }
+    return render(request, 'customer/create_job.html', context)
+
