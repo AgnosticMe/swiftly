@@ -275,3 +275,13 @@ def archived_jobs_page(request):
         "jobs": jobs,
     }
     return render(request, 'customer/jobs.html', context)
+
+@login_required(login_url='/sign-in/?next=/customer/')
+def job_details_page(request, job_id):
+    job = Job.objects.get(id=job_id)
+    context = {
+        'job': job,
+        "GOOGLE_API_KEY": settings.GOOGLE_API_KEY,
+    }
+    return render(request, 'customer/job_details.html', context)
+
