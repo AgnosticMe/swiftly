@@ -77,5 +77,20 @@ class Job(models.Model):
     delivery_name = models.CharField(max_length=255, blank=True)
     delivery_phone = models.CharField(max_length=50, blank=True)
 
+    # step 4
+    duration = models.IntegerField(default=0)
+    distance = models.FloatField(default=0)
+    price = models.FloatField(default=0)
+
     def __str__(self):
         return self.job_name
+
+
+class Transaction(models.Model):
+    stripe_payment_intent_id = models.CharField(max_length=255, unique=True)
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    amount = models.FloatField(default=0)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.stripe_payment_intent_id
