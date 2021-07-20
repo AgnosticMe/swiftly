@@ -51,6 +51,7 @@ class Job(models.Model):
         (CANCELLED_STATUS, 'Cancelled'),
     )
 
+    # step 1
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     job_name = models.CharField(max_length=255)
@@ -62,12 +63,19 @@ class Job(models.Model):
     status = models.CharField(max_length=25, choices=STATUSES, default=CREATING_STATUS)
     created_at = models.DateTimeField(default=timezone.now)
 
+    # step 2
     pickup_address = models.CharField(max_length=255, blank=True)
     pickup_latitude = models.FloatField(default=0)
     pickup_longitude = models.FloatField(default=0)
     pickup_name = models.CharField(max_length=255, blank=True)
     pickup_phone = models.CharField(max_length=50, blank=True)
 
+    # step 3
+    delivery_address = models.CharField(max_length=255, blank=True)
+    delivery_latitude = models.FloatField(default=0)
+    delivery_longitude = models.FloatField(default=0)
+    delivery_name = models.CharField(max_length=255, blank=True)
+    delivery_phone = models.CharField(max_length=50, blank=True)
 
     def __str__(self):
         return self.job_name

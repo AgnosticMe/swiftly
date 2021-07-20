@@ -31,3 +31,13 @@ class JobCreateStep2Form(forms.ModelForm):
         fields = ('pickup_address', 'pickup_latitude', 'pickup_longitude', 'pickup_name', 'pickup_phone')
 
 
+class JobCreateStep3Form(forms.ModelForm):
+    delivery_address = forms.CharField(required=True)
+    delivery_name = forms.CharField(required=True)
+    delivery_phone = forms.CharField(required=True)
+
+    class Meta:
+        model = Job
+        fields = ('delivery_address', 'delivery_latitude', 'delivery_longitude', 'delivery_name', 'delivery_phone')
+
+
