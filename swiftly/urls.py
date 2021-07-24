@@ -18,13 +18,14 @@ customer_urlpatterns = [
 
     path('jobs/currrent/', customer_views.current_jobs_page, name='current_jobs'),
     path('jobs/archived/', customer_views.archived_jobs_page, name='archived_jobs'),
-    path('jobs/job_details/<job_id>/', customer_views.job_details_page, name='job_details'),
+    path('jobs/job_ details/<job_id>/', customer_views.job_details_page, name='job_details'),
 ]
 
 # courier urls
 courier_urlpatterns = [
     path('', courier_views.home, name='home'),
     path('jobs/available/', courier_views.available_jobs_page, name='available_jobs'),
+    path('jobs/available-job-details/<id>/', courier_views.available_job_details_page, name='available_job_details'),
 
     path('api/jobs/available/', courier_apis.available_jobs_api, name='available_jobs_api'),
 ]
