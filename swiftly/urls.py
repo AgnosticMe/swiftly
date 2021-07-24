@@ -7,7 +7,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from src.customer import views as customer_views
-from src.courier import views as courier_views
+from src.courier import views as courier_views, apis as courier_apis
 
 # customer urls
 customer_urlpatterns = [
@@ -25,6 +25,8 @@ customer_urlpatterns = [
 courier_urlpatterns = [
     path('', courier_views.home, name='home'),
     path('jobs/available/', courier_views.available_jobs_page, name='available_jobs'),
+
+    path('api/jobs/available/', courier_apis.available_jobs_api, name='available_jobs_api'),
 ]
 
 # main urls

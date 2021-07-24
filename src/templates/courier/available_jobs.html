@@ -1,8 +1,57 @@
 {% extends 'courier/base.html' %}
 
+{% block head %}
+<script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&callback=initMap&libraries=places&v=weekly" defer></script>
+
+<script>
+    function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 13,
+                center: { lat: 23.266501285413213, lng: 77.41155014662885 },
+            });
+
+            // get available jobs via API
+            fetch("{% url 'courier:available_jobs_api' %}")
+            .then(response => response.json())
+            .then(json => {
+                // console.log(json);
+
+                for (let i = 0; i < json.jobs.length; i++) {
+                    const job = json.jobs[i];
+                    const position = {lat: job.pickup_latitude, lng: job.pickup_longitude};
+                    const marker = new google.maps.Marker({
+                        position: position,
+                        map,
+                    });
+
+                    new google.maps.InfoWindow({
+                        content: "<small><b>" + job.job_name + "</b></small><br/><small>" + job.distance + "Km</small>"
+                    }).open(map, marker);
+                }
+            })
+
+        }
+</script>
+
+<style>
+    .gm-ui-hover-effect {
+        display: none !important;
+    }
+    
+    #map {
+        flex: 1;
+    }
+</style>
+
+{% endblock head %}
+    
 
 {% block content %}
-    <h1>Available Jobs</h1>
+
+    <div class="d-flex flex-column h-100" style="padding-bottom: 60px">
+        <div id="map"></div>
+    </div>
+
 
     {% include 'courier/bottom_tabs.html' %}
 {% endblock content %}
