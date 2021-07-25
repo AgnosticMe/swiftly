@@ -39,3 +39,20 @@ def available_job_details_page(request,id):
         'job': job,
     }
     return render(request, 'courier/available_job_details.html', context)
+
+
+@login_required(login_url='/sign-in/?next=/courier/')
+def current_job_page(request):
+    job = Job.objects.filter(
+        courier=request.user.courier, 
+        status__in=[
+            Job.PICKING_STATUS,
+            Job.DELIVERING_STATUS
+        ]
+    ).last()
+    
+    context = {
+        "job": job,
+        "GOOGLE_API_KEY": settings.GOOGLE_API_KEY,
+    }
+    return render(request, 'courier/current_job.html',context)

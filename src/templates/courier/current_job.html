@@ -1,0 +1,168 @@
+{% extends 'courier/base.html' %}
+{% load static %}
+
+{% block head %}
+
+    <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&callback=initMap&libraries=places&v=weekly" defer></script>
+
+    <script>
+        var pickupLatitude = parseFloat('{{ job.pickup_latitude }}');
+        var pickupLongitude = parseFloat('{{ job.pickup_longitude }}');
+
+        var deliveryLatitude = parseFloat('{{ job.delivery_latitude }}');
+        var deliveryLongitude = parseFloat('{{ job.delivery_longitude }}');
+
+        function initMap() {
+
+            if (!document.getElementById("map")) {
+                return;
+            }
+
+            const directionsService = new google.maps.DirectionsService();
+            const directionsRenderer = new google.maps.DirectionsRenderer();
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 7,
+                center: { lat: 23.266501285413213, lng: 77.41155014662885 },
+            });
+            directionsRenderer.setMap(map);
+
+            calculateAndDisplayRoute(map, directionsService, directionsRenderer);
+        }
+
+        function calculateAndDisplayRoute(map, directionsService, directionsRenderer) {
+            directionsService.route({
+                    origin: new google.maps.LatLng(pickupLatitude, pickupLongitude),
+                    destination: new google.maps.LatLng(deliveryLatitude, deliveryLongitude),
+                    travelMode: google.maps.TravelMode.DRIVING,
+                })
+                .then((response) => {
+                    new google.maps.DirectionsRenderer({
+                        map: map,
+                        directions: response,
+                        supressMarkers: true,
+                        polylineOptions: {
+                            strokeColor:"#000",
+                            strokeWeight: 5,
+                            strokeOpacity: 0.8,
+                        }
+                    });
+
+                    var leg = response.routes[0].legs[0];
+                    new google.maps.Marker({
+                        position: leg.start_location,
+                        map: map,
+                        icon: "{% static 'img/start.png' %}"
+                    });
+
+                    new google.maps.Marker({
+                        position: leg.end_location,
+                        map: map,
+                        icon: "{% static 'img/end.png' %}",
+                    });
+
+                    updateCourierPosition(map);
+
+                    directionsRenderer.setDirections(response);
+                })
+                .catch((e) => window.alert("Directions request failed due to " + status));
+        }
+
+        function updateCourierPosition(map) {
+            navigator.geolocation.watchPosition(pos => {
+                var courierPosition = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+
+                if (!window.courierMarker) {
+                    window.courierMarker = new google.maps.Marker({
+                        position: courierPosition,
+                        map,
+                        icon: "{% static 'img/courier.png' %}"
+                    });
+                } else {
+                    window.courierMarker.setPosition(courierPosition);
+                }
+
+                map.panTo(courierPosition);
+            }, 
+            pos => console.log(pos))
+        }
+    </script>
+
+<style>
+    #map {
+        flex: 1;
+    }
+
+    small {
+        font-size: 12px;
+        line-height: 1.2rem;
+    }
+
+    .card {
+        border: none;
+    }
+
+</style>
+
+{% endblock head %}
+    
+
+{% block content %}
+
+    <div class="d-flex flex-column h-100" style="padding-bottom: 60px">
+        <div class="text-center">
+            <div class="btn-group mt-1 mb-1 align-items-center" role="group">
+                <a href="#" class="btn btn-info">Current Job</a>
+                <a href="#" class="btn btn-outline-info">Archived Jobs</a>
+            </div>
+        </div>
+
+        
+        {% if job %}
+
+            <div id="map"></div>
+
+            <div class="card">
+                <div class="card-body p-2">
+                    <div class="media">
+                        <img src="{{ job.photo.url }}" class="rounded-lg mr-3" width="50px" height="50px">
+                        <div class="media-body">
+                            <b>{{ job.job_name }}</b>
+                            <div class="d-flex">
+                                <div class="flex-grow-1 mr-2">
+        
+                                    <small class="text-success">
+                                        <i class="fas fa-car"></i> <span>{{ job.distance }}</span> km
+                                        <i class="fas fa-clock ml-2"></i> <span>{{ job.duration }}</span> mins
+                                    </small>
+        
+                                    <div class="d-flex align-items-center mt-2">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <small class="text-secondary ml-2">{{ job.pickup_address }}</small>
+                                    </div>
+                                    <div class="d-flex align-items-center mt-2">
+                                        <i class="fas fa-flag-checkered"></i>
+                                        <small class="text-secondary ml-2">{{ job.delivery_address }}</small>
+                                    </div>
+        
+                                </div>
+                                <h3>₹</h3><h3>{{ job.price }}</h3>
+        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% else %}
+
+            <div id="main" class="text-center">
+                <p>You have no Job Now. Let's pick a new one.</p>
+            </div>
+            
+        {% endif %}
+
+    </div>
+
+    {% include 'courier/bottom_tabs.html' %}
+{% endblock content %}
+    
