@@ -58,6 +58,7 @@ def current_job_page(request):
     return render(request, 'courier/current_job.html',context)
 
 
+@login_required(login_url='/sign-in/?next=/courier/')
 def current_job_take_photo_page(request, id):
     job = Job.objects.filter(
         id = id, 
@@ -75,3 +76,8 @@ def current_job_take_photo_page(request, id):
         "job": job,
     }
     return render(request, 'courier/current_job_take_photo.html', context)
+
+
+@login_required(login_url='/sign-in/?next=/courier/')
+def job_complete_page(request):
+    return  render(request, 'courier/job_complete.html')
