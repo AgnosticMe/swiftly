@@ -56,3 +56,22 @@ def current_job_page(request):
         "GOOGLE_API_KEY": settings.GOOGLE_API_KEY,
     }
     return render(request, 'courier/current_job.html',context)
+
+
+def current_job_take_photo_page(request, id):
+    job = Job.objects.filter(
+        id = id, 
+        courier= request.user.courier,
+        status__in=[
+            Job.PICKING_STATUS,
+            Job.DELIVERING_STATUS,
+        ]
+    ).last()
+
+    if not job:
+        return redirect(reverse('courier:current_job'))
+
+    context = {
+        "job": job,
+    }
+    return render(request, 'courier/current_job_take_photo.html', context)
