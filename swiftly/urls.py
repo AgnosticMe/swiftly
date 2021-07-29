@@ -31,6 +31,7 @@ courier_urlpatterns = [
     path('jobs/complete/', courier_views.job_complete_page, name='job_complete'),
     path('jobs/archived/', courier_views.archived_jobs_page, name='archived_jobs'),
     path('profile/', courier_views.profile_page, name='profile'),
+    path('payout_method/', courier_views.payout_method_page, name='payout_method'),
 
     path('api/jobs/available/', courier_apis.available_jobs_api, name='available_jobs_api'),
     path('api/jobs/current/<id>/update/', courier_apis.current_job_update_api, name='current_job_update_api'),

@@ -1,4 +1,3 @@
-from wsgiref.util import request_uri
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -6,6 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 
 from src.models import *
+from src.courier import forms
+
+from django.contrib import messages
 
 # Create your views here.
 
@@ -114,3 +116,21 @@ def profile_page(request):
     }
 
     return render(request, 'courier/profile.html', context)
+
+
+@login_required(login_url='/sign-in/?next=/courier/')
+def payout_method_page(request):
+    payout_form = forms.PayoutForm(instance=request.user.courier)
+
+    if request.method == 'POST':
+        payout_form = forms.PayoutForm(request.POST, instance=request.user.courier)
+        if payout_form.is_valid():
+            payout_form.save()
+
+            messages.success(request, "Payout address is Updated.")
+            return redirect(reverse('courier:profile'))
+
+    context = {
+        'payout_form': payout_form,
+    }
+    return render(request, 'courier/payout_method.html', context)
