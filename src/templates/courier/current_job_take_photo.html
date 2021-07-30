@@ -104,7 +104,7 @@
                 .then(function(response) {return response.json()})
                 .then(function(json) {
                     if (json.success) {
-                        window.location.href = "{% if job.status == 'picking' %} url 'courier:current_job' %} {% else %} {% url 'courier:job_complete' %} {% endif %}"
+                        window.location.href = "{% if job.status == 'picking' %}{% url 'courier:current_job' %} {% else %} {% url 'courier:job_complete' %} {% endif %}"
                     }
                 })
             });

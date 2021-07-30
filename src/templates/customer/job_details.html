@@ -100,6 +100,21 @@
                 var courierPosition = new google.maps.LatLng(job.courier_latitude, job.courier_longitude);
                 window.courierMarker.setPosition(courierPosition);
             }
+
+            if (job.status) {
+                $("#job-status").html(job.status);
+                $("form").css("display", "none");
+            }
+
+            if (job.pickup_photo) {
+                $("#pickup_photo").html('<img src=" ' + job.pickup_photo + ' " class="rounded-lg photo" width="130" height="130"> ');
+            }
+
+            if (job.delivery_photo) {
+                $("#delivery_photo").html('<img src=" ' + job.delivery_photo + ' " class="rounded-lg photo" width="130" height="130"> ');
+            }
+
+
         }
     </script>
 {% endblock head %}
@@ -211,7 +226,7 @@
     <div class="d-flex justify-content-between">
         <b class="text-secondary">TRACK DELIVERY</b>
         <div>
-            <span class="badge badge-info">{{ job.get_status_display }}</span>
+            <span id="job-status" class="badge badge-info">{{ job.get_status_display }}</span>
         </div>
     </div>
 
