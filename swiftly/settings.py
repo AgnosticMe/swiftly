@@ -48,8 +48,7 @@ INSTALLED_APPS = [
     'social_django', # social media login feature
     'sslserver', # SSL-enabled development server for the Django Framework
     'django_cleanup.apps.CleanupConfig', # cleaning up the user uploaded media files
-
-
+    'channels', # for real time maps tracking
 ]
 
 MIDDLEWARE = [
@@ -207,3 +206,15 @@ PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
 
 # Notification setup
 NOTIFICATION_URL = "https://95ec993db0a5.ngrok.io/"
+
+# django channels setup 
+ASGI_APPLICATION = "swiftly.asgi.application"
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}

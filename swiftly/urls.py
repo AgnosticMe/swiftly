@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
-from src import views
+from src import consumers, views
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -9,6 +9,7 @@ from django.views.generic import TemplateView
 
 from src.customer import views as customer_views
 from src.courier import views as courier_views, apis as courier_apis
+from src import consumers
 
 # customer urls
 customer_urlpatterns = [
@@ -55,6 +56,11 @@ urlpatterns = [
 
     path('firebase-messaging-sw.js', (TemplateView.as_view(template_name="firebase-messaging-sw.js", content_type="application/javascript", ))),
 
+]
+
+# websocket configuration
+websocket_urlpatterns = [
+    path('ws/jobs/<job_id>/', consumers.JobConsumer.as_asgi())
 ]
 
 # configuring media files url
