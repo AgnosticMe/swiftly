@@ -1,0 +1,24 @@
+from django.conf import settings
+
+def firebase_info(request):
+    firebase_info = {
+        "FIREBASE_API_KEY": settings.FIREBASE_API_KEY,
+        "FIREBASE_AUTH_DOMAIN": settings.FIREBASE_AUTH_DOMAIN,
+        "FIREBASE_PROJECT_ID": settings.FIREBASE_PROJECT_ID,
+        "FIREBASE_STORAGE_BUCKET": settings.FIREBASE_STORAGE_BUCKET,
+        "FIREBASE_MESSAGING_SENDER_ID": settings.FIREBASE_MESSAGING_SENDER_ID,
+        "FIREBASE_APP_ID": settings.FIREBASE_APP_ID,
+
+
+        "FIREBASE_TYPE": settings.FIREBASE_TYPE,
+        "FIREBASE_PRIVATE_KEY_ID": settings.FIREBASE_PRIVATE_KEY_ID,
+        "FIREBASE_PRIVATE_KEY": settings.FIREBASE_PRIVATE_KEY,
+        "FIREBASE_CLIENT_EMAIL": settings.FIREBASE_CLIENT_EMAIL,
+        "FIREBASE_CLIENT_ID": settings.FIREBASE_CLIENT_ID,
+        "FIREBASE_AUTH_URI": settings.FIREBASE_AUTH_URI,
+        "FIREBASE_TOKEN_URI": settings.FIREBASE_TOKEN_URI,
+        "FIREBASE_AUTH_PROVIDER_X509_CERT_URL": settings.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+        "FIREBASE_CLIENT_X509_CERT_URL": settings.FIREBASE_CLIENT_X509_CERT_URL,
+    }
+
+    return firebase_info

@@ -26,7 +26,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
@@ -78,6 +78,9 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
+
+                # custom context processors
+                'src.context_processors.firebase_info',
             ],
         },
     },
@@ -201,3 +204,6 @@ GOOGLE_API_KEY = config('GOOGLE_API_KEY')
 PAYPAL_MODE = config('PAYPAL_MODE')
 PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
 PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
+
+# Notification setup
+NOTIFICATION_URL = "https://95ec993db0a5.ngrok.io/"

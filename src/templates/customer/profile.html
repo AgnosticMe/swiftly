@@ -2,26 +2,7 @@
 {% load bootstrap4 %}
 
 {% block head %}
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-auth.js"></script>
-
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-        https://firebase.google.com/docs/web/setup#available-libraries -->
-
-    <script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-        apiKey: '{{ FIREBASE_API_KEY }}',
-        authDomain: '{{ FIREBASE_AUTH_DOMAIN }}',
-        projectId: '{{ FIREBASE_PROJECT_ID }}',
-        storageBucket: '{{ FIREBASE_STORAGE_BUCKET }}',
-        messagingSenderId: '{{ FIREBASE_MESSAGING_SENDER_ID }}',
-        appId: '{{ FIREBASE_APP_ID }}',
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    </script>
+    {% include 'load_firebase.html' %}
 {% endblock head %}
 
 {% block main %}
