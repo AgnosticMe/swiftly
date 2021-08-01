@@ -2,10 +2,7 @@
 {% load bootstrap4 %}
 
 {% block head %}
-    <script
-    src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&callback=initMap&libraries=places&v=weekly"
-    async
-    ></script>
+    
     <style>
         #pills-tab a {
             color: black;
@@ -292,6 +289,11 @@
             initMapByType("delivery", deliveryLatitude, deliveryLongitude);
         }
     </script>
+
+    <script
+    src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_API_KEY }}&callback=initMap&libraries=places&v=weekly"
+    async
+    ></script>
 
 {% endblock content %}
 
