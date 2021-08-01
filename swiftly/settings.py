@@ -205,7 +205,7 @@ PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
 PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
 
 # Notification setup
-NOTIFICATION_URL = "https://95ec993db0a5.ngrok.io/"
+NOTIFICATION_URL = "https://03effe6de6b3.ngrok.io"
 
 # django channels setup 
 ASGI_APPLICATION = "swiftly.asgi.application"

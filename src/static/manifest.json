@@ -1,0 +1,14 @@
+{
+    "short_name": "Swiftly",
+    "name": "Welcome to Swiftly App",
+    "description": "The best place for shipping",
+    "icon": [
+        {
+            "src": "/static/img/swiftly_ico.png",
+            "type": "img/png",
+            "sizes": "512x512"
+        }
+    ],
+    "start_url": "/courier/",
+    "display": "standalone"
+}

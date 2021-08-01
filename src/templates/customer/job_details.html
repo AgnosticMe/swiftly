@@ -87,7 +87,7 @@
         }
 
         const jobSocket = new WebSocket(
-            "ws://" + window.location.host + "/ws/jobs/{{ job.id }}/"
+            "ws{% if request.get_host != "localhost:8000" %}s{% endif  %}://" + window.location.host + "/ws/jobs/{{ job.id }}/"
         );
 
         // Execute this function whenever this page recieves an even from the Job Consumer via WebSocket.

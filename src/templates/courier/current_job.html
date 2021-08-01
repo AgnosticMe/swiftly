@@ -69,7 +69,7 @@
 
         function updateCourierPosition(map) {
             const jobSocket = new WebSocket(
-                "ws://" + window.location.host + "/ws/jobs/{{ job.id }}/"
+                "ws{% if request.get_host != "localhost:8000" %}s{% endif  %}://" + window.location.host + "/ws/jobs/{{ job.id }}/"
             );
             navigator.geolocation.watchPosition(pos => {
                 var courierPosition = new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
