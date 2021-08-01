@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'sslserver', # SSL-enabled development server for the Django Framework
     'django_cleanup.apps.CleanupConfig', # cleaning up the user uploaded media files
     'channels', # for real time maps tracking
+    
+    'storages', 
 ]
 
 MIDDLEWARE = [
@@ -136,11 +138,12 @@ USE_TZ = config("USE_TZ", cast=bool)
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
+# STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 
 # Media files(Images, audios, videos) uploaded by users
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -206,7 +209,7 @@ PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
 PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
 
 # Notification setup
-NOTIFICATION_URL = "https://immense-earth-28324.herokuapp.com/" 
+NOTIFICATION_URL = "https://swiftly-quick-delivery-system.herokuapp.com/" 
 
 # django channels setup 
 ASGI_APPLICATION = "swiftly.asgi.application"
@@ -223,3 +226,32 @@ CHANNEL_LAYERS = {
 # Activate Django Heroku
 import django_on_heroku
 django_on_heroku.settings(locals())
+
+# Configurign s3 buckets to host media files
+
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_FILE_OVERWRITE = config('AWS_S3_FILE_OVERWRITE')
+AWS_DEFAULT_ACL = config('AWS_DEFAULT_ACL')
+AWS_S3_REGION_NAME = 'us-west-2'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_LOCATION = 'static'
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+# Static files (CSS, JavaScript, Images)
+STATICFILES_DIRS = [
+    'src/static' 
+]
+STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# Media files(Images, audios, videos) uploaded by users
+DEFAULT_FILE_STORAGE = 'swiftly.media_storages.MediaStorage'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'

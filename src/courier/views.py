@@ -22,6 +22,7 @@ def available_jobs_page(request):
 
     context = {
         "GOOGLE_API_KEY": settings.GOOGLE_API_KEY,
+        "AWS_STORAGE_BUCKET_NAME": settings.AWS_STORAGE_BUCKET_NAME,
     }
     return render(request, 'courier/available_jobs.html', context)
 

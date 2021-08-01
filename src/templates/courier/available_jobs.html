@@ -50,7 +50,7 @@
         $("#job-details").css("display", "block");
         $("#job-name").html(job.job_name);
 
-        $("#job-photo").attr('src', "/media/" + job.photo);
+        $("#job-photo").attr('src', "https://{{ AWS_STORAGE_BUCKET_NAME }}.s3.amazonaws.com/media/" + job.photo);
         $("#pickup-address").html(job.pickup_address);
         $("#delivery-address").html(job.delivery_address);
         $("#distance").html(job.distance);
