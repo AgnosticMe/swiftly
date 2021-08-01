@@ -1,1 +1,1 @@
-web: gunicorn swiftly.wsgi
+web: gunicorn swiftly.wsgi --log-file -
