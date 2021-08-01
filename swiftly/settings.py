@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+from os import lockf
 from pathlib import Path
 from decouple import config
 
@@ -205,7 +206,7 @@ PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
 PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
 
 # Notification setup
-NOTIFICATION_URL = "https://03effe6de6b3.ngrok.io"
+NOTIFICATION_URL = "https://immense-earth-28324.herokuapp.com/" 
 
 # django channels setup 
 ASGI_APPLICATION = "swiftly.asgi.application"
@@ -218,3 +219,7 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+# Activate Django Heroku
+import django_on_heroku
+django_on_heroku.settings(locals())
