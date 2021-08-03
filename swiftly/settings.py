@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+from calendar import c
 from os import lockf
 from pathlib import Path
 from decouple import config
@@ -214,11 +215,13 @@ NOTIFICATION_URL = "https://swiftly-quick-delivery-system.herokuapp.com/"
 # django channels setup 
 ASGI_APPLICATION = "swiftly.asgi.application"
 
+# Redis Configuration
+REDIS_URI = config('REDIS_URI')
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [REDIS_URI],
         },
     },
 }
@@ -255,3 +258,5 @@ DEFAULT_FILE_STORAGE = 'swiftly.media_storages.MediaStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
